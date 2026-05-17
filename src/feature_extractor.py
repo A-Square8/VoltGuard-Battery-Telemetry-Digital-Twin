@@ -10,12 +10,14 @@ class FeatureExtractor:
         self.current_buffer = deque(maxlen=window_size)
         self.temp_buffer = deque(maxlen=window_size)
         self.time_buffer = deque(maxlen=window_size)
+        self.capacity_buffer = deque(maxlen=10)
 
-    def update(self, voltage, current, temp, timestamp):
+    def update(self, voltage, current, temp, capacity, timestamp):
         self.voltage_buffer.append(voltage)
         self.current_buffer.append(current)
         self.temp_buffer.append(temp)
         self.time_buffer.append(timestamp)
+        self.capacity_buffer.append(capacity)
 
     def extract_features(self):
         if len(self.voltage_buffer) < self.window_size:
