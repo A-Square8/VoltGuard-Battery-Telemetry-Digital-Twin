@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "author": "Ankit Ambasta",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 50,
+      "left": 0,
+      "attrs": { "env": "arduino-core" }
+    },
+    {
+      "type": "wokwi-slide-potentiometer",
+      "id": "pot_vol",
+      "top": -150,
+      "left": -100,
+      "attrs": { "travelLength": "30" }
+    },
+    {
+      "type": "wokwi-slide-potentiometer",
+      "id": "pot_cur",
+      "top": -150,
+      "left": 50,
+      "attrs": { "travelLength": "30" }
+    },
+    {
+      "type": "wokwi-slide-potentiometer",
+      "id": "pot_temp",
+      "top": -150,
+      "left": 200,
+      "attrs": { "travelLength": "30" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "pot_vol:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "pot_vol:GND", "esp:GND.1", "black", [ "v0" ] ],
+    [ "pot_vol:SIG", "esp:34", "green", [ "v0" ] ],
+    [ "pot_cur:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "pot_cur:GND", "esp:GND.1", "black", [ "v0" ] ],
+    [ "pot_cur:SIG", "esp:35", "blue", [ "v0" ] ],
+    [ "pot_temp:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "pot_temp:GND", "esp:GND.1", "black", [ "v0" ] ],
+    [ "pot_temp:SIG", "esp:32", "orange", [ "v0" ] ]
+  ],
+  "dependencies": {}
+}
