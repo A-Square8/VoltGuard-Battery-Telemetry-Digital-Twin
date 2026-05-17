@@ -1,10 +1,14 @@
 import json
+import time
 import paho.mqtt.client as mqtt
+from feature_extractor import FeatureExtractor
 
 MQTT_BROKER = "broker.hivemq.com"
 MQTT_PORT = 1883
 TELEMETRY_TOPIC = "voltguard/telemetry"
 FAULTS_TOPIC = "voltguard/faults/inject"
+
+extractor = FeatureExtractor(window_size=5)
 
 def on_connect(client, userdata, flags, reason_code, properties):
     if reason_code == 0:
@@ -22,9 +26,17 @@ def on_message(client, userdata, msg):
         temp = data.get("temperature", 0.0)
         capacity = data.get("capacity", 0.0)
         cycle = data.get("id_cycle", 0)
-        print(f"[TELEMETRY] V: {voltage:.2f}V | I: {current:.2f}A | T: {temp:.2f}C | Cap: {capacity:.2f}Ah | Cycle: {cycle}")
+        
+        timestamp = time.time()
+        extractor.update(voltage, current, temp, timestamp)
+        features = extractor.extract_features()
+        
+        print(f"[RAW] V: {voltage:.2f} | I: {current:.2f} | T: {temp:.2f}")
+        if features:
+            print(f"[FEATURES] dV/dt: {features['dv_dt']:.4f} | dT/dt: {features['dt_dt']:.4f} | Spike: {features['temp_spike']} | Instability: {features['current_instability']:.4f}")
+            
     except json.JSONDecodeError:
-        print(f"[RAW] {payload}")
+        print(f"[RAW ERROR] {payload}")
 
 def start_subscriber():
     client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
