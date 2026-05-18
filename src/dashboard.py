@@ -250,4 +250,5 @@ with gr.Blocks(css=CSS, head=HEAD, theme=gr.themes.Monochrome().set(body_backgro
     timer=gr.Timer(1); timer.tick(fn=tick,outputs=live)
 
 if __name__=="__main__":
-    demo.launch(server_name="0.0.0.0",server_port=7860,allowed_paths=[PROJECT_ROOT])
+    port = int(os.environ.get("PORT", 7860))
+    demo.launch(server_name="0.0.0.0", server_port=port, allowed_paths=[PROJECT_ROOT])
