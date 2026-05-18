@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: voltguard-digital-twin
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: python src/dashboard.py
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.10.0

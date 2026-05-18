@@ -23,6 +23,34 @@ This project was built from the ground up using the official **NASA Battery Agin
 
 <img width="3000" height="2431" alt="image" src="https://github.com/user-attachments/assets/e9c86f90-33dc-4adc-b589-b5b6524f359a" />
 
+## Hardware Implementation
+
+While the current dashboard integrates with a simulated Wokwi ESP32, the architecture is designed as a direct drop-in replacement with physical hardware. 
+
+### Sensors Selected
+
+| Measurement | Sensor Component | Why This Sensor Was Chosen |
+|-------------|------------------|---------------------------|
+| **Voltage & Current** | **INA219 (I2C)** | The INA219 is an industry-standard power monitor IC. It provides high-precision (12-bit) measurement of both voltage and current simultaneously over I2C, bypassing the noisy internal ADC of the ESP32. It supports up to 26V and ±3.2A, perfectly capturing the target discharge profile. |
+| **Current (Backup)** | **ACS712-5A** | A Hall-effect sensor that provides galvanically isolated analog current measurement. The 5A variant maps perfectly to the ~2A nominal discharge limit, ensuring safety if the shunt resistor on the INA219 fails. |
+| **Temperature** | **DS18B20 (1-Wire)** | Unlike analog thermistors which are prone to wire resistance noise, the DS18B20 outputs a digital temperature reading with ±0.5°C accuracy. It uses a 1-Wire bus, meaning multiple cells in a pack can be monitored using just a single ESP32 GPIO pin. |
+
+### Wiring & Pin Layout
+
+| Wire Color | From (ESP32) | To (Component) | Component Pin |
+|------------|--------------|----------------|---------------|
+| 🔵 Blue    | GPIO 21      | INA219         | SDA           |
+| 🟡 Yellow  | GPIO 22      | INA219         | SCL           |
+| 🔴 Red     | 3.3V         | INA219         | VCC           |
+| ⚫ Black   | GND          | INA219         | GND           |
+| 🟠 Orange  | GPIO 35      | ACS712         | OUT           |
+| 🔴 Red     | 5V           | ACS712         | VCC           |
+| ⚫ Black   | GND          | ACS712         | GND           |
+| 🟢 Green   | GPIO 32      | DS18B20        | DATA          |
+| 🔴 Red     | 3.3V         | DS18B20        | VCC           |
+| ⚫ Black   | GND          | DS18B20        | GND           |
+| 🔴 Red     | 3.3V         | Resistor pin 1 | —             |
+| 🟢 Green   | GPIO 32      | Resistor pin 2 | — (4.7kΩ pull-up)|
 
 ## The Data Pipeline
 
