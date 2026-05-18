@@ -19,6 +19,11 @@ VoltGuard AI is a comprehensive digital twin designed to monitor, analyze, and p
 
 This project was built from the ground up using the official **NASA Battery Aging Dataset**, ensuring that the machine learning models are trained on real-world degradation patterns.
 
+## PCB Layout
+
+<img width="3000" height="2431" alt="image" src="https://github.com/user-attachments/assets/e9c86f90-33dc-4adc-b589-b5b6524f359a" />
+
+
 ## The Data Pipeline
 
 The architecture is built for real-time responsiveness. Data originates at the edge layer and flows through a message broker before being processed by the Python backend. The system allows for a bidirectional control loop, meaning the dashboard can actively send commands back to the hardware to simulate faults.
