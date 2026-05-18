@@ -1,12 +1,4 @@
-"""
-VoltGuard ML Pipeline — Training Script
-Trains 3 models on NASA Battery Aging Dataset (discharge.csv):
-  1. XGBoost: Battery Health Classification (Healthy/Degraded/Critical)
-  2. Isolation Forest: Thermal Anomaly Detection
-  3. LSTM: Remaining Useful Life (RUL) Forecasting
 
-Run in Google Colab with GPU runtime for LSTM training.
-"""
 
 import pandas as pd
 import numpy as np
@@ -24,14 +16,14 @@ print("=" * 60)
 print("VOLTGUARD ML PIPELINE — TRAINING")
 print("=" * 60)
 
-# --- Load Dataset ---
+
 df = pd.read_csv('discharge.csv')
 print(f"\nDataset loaded: {len(df):,} records, {len(df.columns)} features")
 print(f"Cycles: {df['id_cycle'].nunique()} | Batteries: {df['Battery'].nunique()}")
 print(f"Voltage range: {df['Voltage_measured'].min():.2f} - {df['Voltage_measured'].max():.2f} V")
 print(f"Temperature range: {df['Temperature_measured'].min():.1f} - {df['Temperature_measured'].max():.1f} °C")
 
-# --- Model 1: XGBoost Health Classifier ---
+# Model 1: XGBoost Health Classifier
 print("\n" + "=" * 60)
 print("MODEL 1: XGBoost Health State Classifier")
 print("=" * 60)
@@ -66,7 +58,7 @@ with open('xgb_model.pkl', 'wb') as f:
     pickle.dump(xgb_model, f)
 print("Saved: xgb_model.pkl")
 
-# --- Model 2: Isolation Forest Anomaly Detection ---
+# Model 2: Isolation Forest Anomaly Detection
 print("\n" + "=" * 60)
 print("MODEL 2: Isolation Forest Anomaly Detector")
 print("=" * 60)
@@ -94,7 +86,7 @@ with open('iso_scaler.pkl', 'wb') as f:
     pickle.dump(iso_scaler, f)
 print("Saved: iso_model.pkl, iso_scaler.pkl")
 
-# --- Model 3: LSTM RUL Forecaster ---
+# Model 3: LSTM RUL Forecaster
 print("\n" + "=" * 60)
 print("MODEL 3: LSTM Remaining Useful Life Forecaster")
 print("=" * 60)

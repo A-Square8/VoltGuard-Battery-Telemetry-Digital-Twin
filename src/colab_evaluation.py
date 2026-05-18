@@ -1,8 +1,3 @@
-"""
-VoltGuard ML Pipeline — Evaluation Script
-Evaluates all 3 trained models and verifies fault injection scenarios.
-Run in Google Colab after training, or locally with trained models.
-"""
 
 import pandas as pd
 import numpy as np
@@ -18,7 +13,7 @@ print("=" * 60)
 df = pd.read_csv('discharge.csv')
 df['Health_State'] = np.where(df['Capacity'] > 1.6, 0, np.where(df['Capacity'] > 1.4, 1, 2))
 
-# --- XGBoost ---
+# XGBoost
 print("\n" + "-" * 40)
 print("MODEL 1: XGBoost Health Classifier")
 print("-" * 40)
@@ -33,7 +28,7 @@ print(f"F1 (Macro): {f1_score(y_xgb, y_pred, average='macro'):.4f}")
 print(f"\nConfusion Matrix:\n{confusion_matrix(y_xgb, y_pred)}")
 print(f"\n{classification_report(y_xgb, y_pred, target_names=['HEALTHY','DEGRADED','CRITICAL'])}")
 
-# --- Isolation Forest ---
+# Isolation Forest
 print("-" * 40)
 print("MODEL 2: Isolation Forest Anomaly Detector")
 print("-" * 40)
@@ -64,7 +59,7 @@ for name, vals in scenarios:
     label = "ANOMALY" if pred == -1 else "NORMAL"
     print(f"  {name} -> {label}")
 
-# --- LSTM RUL ---
+# LSTM RUL
 print("\n" + "-" * 40)
 print("MODEL 3: LSTM RUL Forecaster")
 print("-" * 40)

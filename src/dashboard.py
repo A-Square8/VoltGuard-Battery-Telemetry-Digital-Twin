@@ -190,7 +190,7 @@ HERO = '''<div style="background:#050505;color:#fff;font-family:Inter,sans-serif
   <div>
     <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
       <div style="width:44px;height:44px;background:linear-gradient(135deg,#f2ca50,#b8860b);border-radius:12px;display:flex;align-items:center;justify-content:center;"><span class="material-symbols-outlined" style="color:#000;font-size:26px;">bolt</span></div>
-      <span style="font-family:Hanken Grotesk,sans-serif;font-size:0.9rem;font-weight:700;letter-spacing:3px;color:#D4AF37;">VOLTGUARD AI</span>
+      <span style="font-family:Hanken Grotesk,sans-serif;font-size:0.9rem;font-weight:700;letter-spacing:3px;color:#D4AF37;">VOLTGUARD</span>
     </div>
     <h1 style="font-family:Hanken Grotesk,sans-serif;font-size:2.8rem;font-weight:700;color:#fff;line-height:1.15;margin:0 0 1.2rem;">Battery Telemetry<br><span style="color:#D4AF37;">Digital Twin</span></h1>
     <p style="color:#999;font-size:0.95rem;line-height:1.7;margin-bottom:1.8rem;">A predictive maintenance system fusing real-time IoT sensor telemetry with three ML models trained on the NASA Battery Aging Dataset to forecast degradation, detect thermal anomalies, and estimate remaining useful life.</p>
