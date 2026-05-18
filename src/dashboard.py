@@ -14,6 +14,10 @@ warnings.filterwarnings('ignore')
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(SRC_DIR)
 MODELS_DIR = os.path.join(PROJECT_ROOT, 'models')
+PCB_IMAGE_PATH = os.path.join(PROJECT_ROOT, 'pcb_layout.png')
+import base64
+with open(PCB_IMAGE_PATH, 'rb') as _f:
+    PCB_IMAGE_B64 = "data:image/png;base64," + base64.b64encode(_f.read()).decode()
 sys.path.insert(0, SRC_DIR)
 from feature_extractor import FeatureExtractor
 from data_simulator import DatasetSimulator
@@ -206,12 +210,12 @@ HERO = '''<div style="background:#050505;color:#fff;font-family:Inter,sans-serif
     </div>
   </div>
   <div style="background:#0a0a0a;border:1px solid #1a1a1a;border-radius:16px;height:100%;min-height:400px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
-    <div style="position:absolute;inset:0;background:radial-gradient(circle at 30% 40%,rgba(212,175,55,0.04) 0%,transparent 60%);"></div>
-    <div style="text-align:center;z-index:1;"><span class="material-symbols-outlined" style="font-size:64px;color:#333;">developer_board</span><p style="color:#444;font-size:0.75rem;font-weight:600;letter-spacing:1.5px;margin-top:0.8rem;">PCB DIAGRAM PLACEHOLDER</p><p style="color:#333;font-size:0.65rem;">Replace with your hardware schematic</p></div>
+    <img src="__PCB_B64__" style="width:100%;height:100%;object-fit:contain;border-radius:16px;" alt="VoltGuard PCB Layout"/>
   </div>
 </div>
 <div style="text-align:center;padding:1.5rem 0 0.5rem;animation:bounce 2s infinite;"><span class="material-symbols-outlined" style="color:#D4AF37;font-size:24px;">keyboard_double_arrow_down</span><p style="color:#555;font-size:0.7rem;letter-spacing:2px;font-weight:600;">SCROLL FOR LIVE DASHBOARD</p></div>
 </div><style>@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}</style>'''
+HERO = HERO.replace("__PCB_B64__", PCB_IMAGE_B64)
 
 HEAD='''<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;700&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script>function forceDark(){document.body.classList.add('dark');document.documentElement.classList.add('dark');}document.addEventListener("DOMContentLoaded",forceDark);setTimeout(forceDark,100);</script>'''
@@ -246,4 +250,4 @@ with gr.Blocks(css=CSS, head=HEAD, theme=gr.themes.Monochrome().set(body_backgro
     timer=gr.Timer(1); timer.tick(fn=tick,outputs=live)
 
 if __name__=="__main__":
-    demo.launch(server_name="0.0.0.0",server_port=7860)
+    demo.launch(server_name="0.0.0.0",server_port=7860,allowed_paths=[PROJECT_ROOT])

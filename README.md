@@ -2,20 +2,44 @@
 
 A real-time predictive maintenance system that monitors lithium-ion battery health using IoT sensor telemetry and machine learning. Built on the NASA Battery Aging Dataset.
 
-## Architecture
+## System Flowchart
 
-```
-ESP32 (Wokwi)  ──MQTT──>  Python Backend  ──>  Gradio Dashboard
-     │                         │
-  Sensors:                  ML Pipeline:
-  • Voltage               • XGBoost (Health Classification)
-  • Current               • Isolation Forest (Anomaly Detection)
-  • Temperature            • LSTM (RUL Forecasting)
-     │                         │
-  Fault Injection          Feature Engineering:
-  via MQTT commands        • dV/dt, FFT, rolling variance
-                           • temperature spike detection
-                           • current instability metrics
+```mermaid
+flowchart LR
+    subgraph EDGE["Edge Layer (ESP32)"]
+        direction TB
+        S1["Voltage Sensor"]
+        S2["Current Sensor"]
+        S3["Temp Sensor"]
+    end
+
+    subgraph STREAM["Streaming Layer"]
+        MQTT["MQTT Broker\n(HiveMQ)"]
+    end
+
+    subgraph BACKEND["Python Backend"]
+        direction TB
+        FE["Feature Engineering\ndV/dt, FFT, rolling variance\ntemp spike, current instability"]
+        subgraph ML["ML Inference Pipeline"]
+            direction LR
+            XGB["XGBoost\nHealth Classification\nHealthy / Degraded / Critical"]
+            ISO["Isolation Forest\nAnomaly Detection\nNormal / Thermal Runaway"]
+            LSTM["LSTM\nRUL Forecasting\nRemaining Cycles"]
+        end
+        FE --> ML
+    end
+
+    subgraph UI["Gradio Dashboard"]
+        direction TB
+        LIVE["Live Telemetry\n+ Feature Tables"]
+        PRED["ML Predictions\nHealth Score, Anomaly, RUL"]
+        FAULT["Fault Injection\nOverheat / Sag / Unstable"]
+    end
+
+    S1 & S2 & S3 --> MQTT
+    MQTT --> FE
+    ML --> LIVE & PRED
+    FAULT -- "MQTT Command" --> EDGE
 ```
 
 ## ML Models

@@ -13,7 +13,6 @@ __pycache__/
 *$py.class
 
 # Data files
-*.csv
 *.dat
 *.out
 *.log
